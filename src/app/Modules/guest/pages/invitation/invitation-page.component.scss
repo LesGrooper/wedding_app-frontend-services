@@ -1,0 +1,606 @@
+// ==============================================================
+// Variables
+// ==============================================================
+$color-cream:    #faf7f2;
+$color-warm:     #f5ece0;
+$color-brown:    #8b5e3c;
+$color-brown-dk: #5c3a1e;
+$color-gold:     #c9a96e;
+$color-text:     #3d2c1e;
+$color-muted:    #a08060;
+$color-white:    #ffffff;
+$color-error:    #c0392b;
+$color-success:  #27ae60;
+
+$font-serif:  'Georgia', 'Times New Roman', serif;
+$font-sans:   'Segoe UI', system-ui, sans-serif;
+
+$radius-sm: 8px;
+$radius-md: 16px;
+$radius-lg: 24px;
+
+// ==============================================================
+// Animations
+// ==============================================================
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(32px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes heroFadeIn {
+  from { opacity: 0; transform: translateY(-16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes scrollBounce {
+  0%, 100% { transform: translateX(-50%) translateY(0); opacity: 0.6; }
+  50%       { transform: translateX(-50%) translateY(8px); opacity: 1; }
+}
+
+// ==============================================================
+// HERO
+// ==============================================================
+.hero {
+  position: relative;
+  width: 100%;
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background:
+    linear-gradient(180deg, rgba(92,58,30,0.55) 0%, rgba(139,94,60,0.35) 100%),
+    url('/assets/images/hero-bg.jpg') center/cover no-repeat;
+  text-align: center;
+  overflow: hidden;
+
+  &__overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(30, 16, 8, 0.3);
+  }
+
+  &__content {
+    position: relative;
+    z-index: 1;
+    padding: 2rem 1.5rem;
+    animation: heroFadeIn 1.2s ease both;
+  }
+
+  &__pre {
+    font-family: $font-sans;
+    font-size: 0.85rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.85);
+    margin-bottom: 0.75rem;
+  }
+
+  &__names {
+    font-family: $font-serif;
+    font-size: clamp(2.4rem, 10vw, 4.5rem);
+    color: $color-white;
+    line-height: 1.1;
+    margin: 0 0 0.5rem;
+  }
+
+  &__bride, &__groom {
+    display: block;
+  }
+
+  &__amp {
+    font-family: $font-serif;
+    font-size: clamp(1.5rem, 6vw, 2.8rem);
+    color: $color-gold;
+    display: block;
+    margin: 0.1em 0;
+  }
+
+  &__date {
+    font-family: $font-sans;
+    font-size: 0.9rem;
+    letter-spacing: 0.1em;
+    color: rgba(255,255,255,0.85);
+    margin: 0.75rem 0 2rem;
+  }
+
+  &__cta {
+    animation: fadeInUp 1s 0.6s ease both;
+  }
+
+  &__scroll-hint {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    width: 24px;
+    height: 40px;
+    border: 2px solid rgba(255,255,255,0.6);
+    border-radius: 12px;
+    animation: scrollBounce 1.8s ease-in-out infinite;
+
+    span {
+      display: block;
+      width: 4px;
+      height: 8px;
+      background: rgba(255,255,255,0.8);
+      border-radius: 2px;
+      margin: 6px auto 0;
+    }
+  }
+}
+
+// ==============================================================
+// Invitation Body
+// ==============================================================
+.invitation-body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.6s ease;
+
+  &.is-open {
+    max-height: none;
+    overflow: visible;
+  }
+}
+
+// ==============================================================
+// Sections
+// ==============================================================
+.section {
+  padding: 4rem 1.5rem;
+  background: $color-cream;
+
+  &--warm {
+    background: $color-warm;
+  }
+
+  &__inner {
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  &__title {
+    font-family: $font-serif;
+    font-size: clamp(1.5rem, 6vw, 2.2rem);
+    color: $color-brown-dk;
+    text-align: center;
+    margin-bottom: 1.5rem;
+    position: relative;
+
+    &::after {
+      content: '';
+      display: block;
+      width: 48px;
+      height: 2px;
+      background: $color-gold;
+      margin: 0.5rem auto 0;
+      border-radius: 2px;
+    }
+  }
+
+  &__text {
+    font-family: $font-sans;
+    font-size: 0.95rem;
+    color: $color-text;
+    text-align: center;
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+  }
+}
+
+// Scroll Animations
+.anim-section {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+
+  &.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.ornament {
+  text-align: center;
+  color: $color-gold;
+  letter-spacing: 0.5em;
+  font-size: 0.7rem;
+  margin-bottom: 1.25rem;
+}
+
+// ==============================================================
+// Event Cards
+// ==============================================================
+.event-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  background: $color-white;
+  border-radius: $radius-md;
+  padding: 1rem 1.25rem;
+  margin-bottom: 0.75rem;
+  box-shadow: 0 2px 12px rgba(139,94,60,0.08);
+
+  &__icon {
+    font-size: 1.4rem;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  &__info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+
+    strong {
+      font-family: $font-sans;
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: $color-muted;
+    }
+
+    span {
+      font-family: $font-sans;
+      font-size: 0.95rem;
+      color: $color-text;
+      line-height: 1.5;
+    }
+  }
+}
+
+.notice {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba($color-gold, 0.12);
+  border-left: 3px solid $color-gold;
+  border-radius: $radius-sm;
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+  color: $color-brown-dk;
+  margin-top: 1rem;
+
+  &__icon { flex-shrink: 0; }
+}
+
+// ==============================================================
+// Form
+// ==============================================================
+.form {
+  &__group {
+    margin-bottom: 1rem;
+
+    &--error .form__input {
+      border-color: $color-error;
+    }
+  }
+
+  &__label {
+    display: block;
+    font-family: $font-sans;
+    font-size: 0.8rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: $color-muted;
+    margin-bottom: 0.4rem;
+  }
+
+  &__input {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    border: 1.5px solid rgba($color-brown, 0.25);
+    border-radius: $radius-sm;
+    font-size: 1rem;
+    color: $color-text;
+    background: $color-white;
+    outline: none;
+    transition: border-color 0.2s;
+    box-sizing: border-box;
+
+    &:focus { border-color: $color-brown; }
+
+    &::placeholder { color: $color-muted; }
+  }
+
+  &__textarea {
+    resize: vertical;
+    min-height: 80px;
+  }
+
+  &__error {
+    display: block;
+    font-size: 0.8rem;
+    color: $color-error;
+    margin-top: 0.3rem;
+  }
+
+  &__error-global {
+    background: rgba($color-error, 0.08);
+    border: 1px solid rgba($color-error, 0.3);
+    border-radius: $radius-sm;
+    padding: 0.75rem 1rem;
+    font-size: 0.875rem;
+    color: $color-error;
+    margin-bottom: 1rem;
+  }
+
+  &__success {
+    background: rgba($color-success, 0.1);
+    border: 1px solid rgba($color-success, 0.3);
+    border-radius: $radius-sm;
+    padding: 0.75rem 1rem;
+    font-size: 0.875rem;
+    color: $color-success;
+    margin-bottom: 1rem;
+    text-align: center;
+  }
+}
+
+// Attendance toggle
+.attendance-toggle {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.attendance-btn {
+  flex: 1;
+  padding: 0.75rem;
+  border: 1.5px solid rgba($color-brown, 0.3);
+  border-radius: $radius-sm;
+  background: transparent;
+  font-size: 0.95rem;
+  color: $color-brown;
+  cursor: pointer;
+  transition: all 0.2s;
+  min-height: 48px;
+
+  &--active {
+    background: $color-brown;
+    color: $color-white;
+    border-color: $color-brown;
+  }
+
+  &--no.attendance-btn--active {
+    background: $color-brown-dk;
+    border-color: $color-brown-dk;
+  }
+}
+
+// ==============================================================
+// RSVP success
+// ==============================================================
+.rsvp-success {
+  text-align: center;
+  padding: 2rem 1rem;
+
+  &__icon { font-size: 3rem; margin-bottom: 1rem; }
+
+  h3 {
+    font-family: $font-serif;
+    font-size: 1.5rem;
+    color: $color-brown-dk;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    font-size: 0.95rem;
+    color: $color-text;
+    margin-bottom: 0.25rem;
+  }
+
+  &__qr-hint {
+    color: $color-muted;
+    font-size: 0.85rem;
+  }
+}
+
+// ==============================================================
+// Gift
+// ==============================================================
+.gift-card {
+  background: $color-white;
+  border-radius: $radius-md;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 12px rgba(139,94,60,0.08);
+  text-align: center;
+
+  &__label {
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: $color-muted;
+    margin-bottom: 0.5rem;
+  }
+
+  &__bank {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: $color-brown-dk;
+  }
+
+  &__account {
+    font-size: 1.5rem;
+    font-family: $font-serif;
+    color: $color-brown;
+    letter-spacing: 0.1em;
+    margin: 0.25rem 0;
+  }
+
+  &__name {
+    font-size: 0.85rem;
+    color: $color-muted;
+  }
+
+  &__address {
+    font-size: 0.9rem;
+    color: $color-text;
+    line-height: 1.6;
+  }
+}
+
+// ==============================================================
+// Comments
+// ==============================================================
+.comments-list {
+  margin-top: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.comment-item {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+
+  &__avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: $color-brown;
+    color: $color-white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    font-weight: 600;
+    flex-shrink: 0;
+  }
+
+  &__body {
+    background: $color-white;
+    border-radius: 0 $radius-md $radius-md $radius-md;
+    padding: 0.75rem 1rem;
+    flex: 1;
+    box-shadow: 0 1px 6px rgba(139,94,60,0.08);
+  }
+
+  &__name {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: $color-brown;
+    margin-bottom: 0.25rem;
+  }
+
+  &__message {
+    font-size: 0.9rem;
+    color: $color-text;
+    line-height: 1.5;
+  }
+}
+
+.empty-state {
+  text-align: center;
+  color: $color-muted;
+  font-size: 0.9rem;
+  margin-top: 1.5rem;
+}
+
+// ==============================================================
+// QR Section
+// ==============================================================
+.qr-wrapper {
+  display: flex;
+  justify-content: center;
+  margin: 1.5rem 0;
+  padding: 1.25rem;
+  background: $color-white;
+  border-radius: $radius-md;
+  box-shadow: 0 4px 20px rgba(139,94,60,0.12);
+}
+
+.qr-note {
+  text-align: center;
+  font-size: 0.875rem;
+  color: $color-muted;
+  line-height: 1.5;
+}
+
+// ==============================================================
+// Buttons
+// ==============================================================
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.85rem 2rem;
+  border-radius: $radius-sm;
+  font-size: 0.95rem;
+  font-family: $font-sans;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  border: 2px solid transparent;
+  min-height: 48px;
+  transition: all 0.2s;
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  &--primary {
+    background: $color-brown;
+    color: $color-white;
+    border-color: $color-brown;
+
+    &:hover:not(:disabled) {
+      background: $color-brown-dk;
+      border-color: $color-brown-dk;
+    }
+  }
+
+  &--outline {
+    background: transparent;
+    color: $color-brown;
+    border-color: $color-brown;
+
+    &:hover:not(:disabled) {
+      background: $color-brown;
+      color: $color-white;
+    }
+  }
+
+  &--full { width: 100%; }
+}
+
+// Spinner
+.spinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255,255,255,0.4);
+  border-top-color: $color-white;
+  border-radius: 50%;
+  display: inline-block;
+  animation: spin 0.6s linear infinite;
+}
+
+// ==============================================================
+// Footer
+// ==============================================================
+.footer {
+  background: $color-brown-dk;
+  color: rgba(255,255,255,0.85);
+  text-align: center;
+  padding: 2.5rem 1.5rem;
+  font-family: $font-sans;
+  font-size: 0.9rem;
+  line-height: 1.8;
+
+  &__names {
+    font-family: $font-serif;
+    font-size: 1.3rem;
+    color: $color-gold;
+  }
+
+  &__heart {
+    font-size: 1.5rem;
+    margin-top: 0.5rem;
+  }
+}

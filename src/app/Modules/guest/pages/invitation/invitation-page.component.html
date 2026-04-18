@@ -1,0 +1,230 @@
+<!-- ============================================================ -->
+<!-- HERO SECTION -->
+<!-- ============================================================ -->
+<section class="hero" id="section-hero">
+  <div class="hero__overlay"></div>
+  <div class="hero__content">
+    <p class="hero__pre">The Wedding of</p>
+    <h1 class="hero__names">
+      <span class="hero__bride">Anisa</span>
+      <span class="hero__amp">&amp;</span>
+      <span class="hero__groom">Budi</span>
+    </h1>
+    <p class="hero__date">Sabtu, 10 Mei 2025</p>
+    <button class="btn btn--primary hero__cta" (click)="openInvitation()" *ngIf="!isOpened">
+      Buka Undangan
+    </button>
+  </div>
+  <div class="hero__scroll-hint" *ngIf="isOpened">
+    <span></span>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- MAIN CONTENT (shown after open) -->
+<!-- ============================================================ -->
+<div class="invitation-body" [class.is-open]="isOpened">
+
+  <!-- THANK YOU -->
+  <section class="section section--warm anim-section" #animSection id="section-thankyou">
+    <div class="section__inner">
+      <div class="ornament">✦ ✦ ✦</div>
+      <h2 class="section__title">Dengan Penuh Syukur</h2>
+      <p class="section__text">
+        Kami mengundang Anda untuk berbagi kebahagiaan di hari istimewa kami.<br>
+        Kehadiran Anda adalah hadiah terbesar bagi kami.
+      </p>
+    </div>
+  </section>
+
+  <!-- EVENT DETAILS -->
+  <section class="section anim-section" #animSection id="section-event">
+    <div class="section__inner">
+      <h2 class="section__title">Detail Acara</h2>
+
+      <div class="event-card">
+        <div class="event-card__icon">📅</div>
+        <div class="event-card__info">
+          <strong>Tanggal</strong>
+          <span>Sabtu, 10 Mei 2025</span>
+        </div>
+      </div>
+
+      <div class="event-card">
+        <div class="event-card__icon">⏰</div>
+        <div class="event-card__info">
+          <strong>Waktu</strong>
+          <span>10.00 WIB – Selesai</span>
+        </div>
+      </div>
+
+      <div class="event-card">
+        <div class="event-card__icon">📍</div>
+        <div class="event-card__info">
+          <strong>Lokasi</strong>
+          <span>Gedung Serbaguna Indah<br>Jl. Merdeka No. 1, Jakarta</span>
+        </div>
+      </div>
+
+      <div class="event-card">
+        <div class="event-card__icon">👗</div>
+        <div class="event-card__info">
+          <strong>Dress Code</strong>
+          <span>White &amp; Brown</span>
+        </div>
+      </div>
+
+      <div class="notice">
+        <span class="notice__icon">ℹ️</span>
+        Setiap undangan hanya berlaku untuk <strong>1 tamu</strong>
+      </div>
+    </div>
+  </section>
+
+  <!-- RSVP -->
+  <section class="section section--warm anim-section" #animSection id="section-rsvp">
+    <div class="section__inner">
+      <h2 class="section__title">Konfirmasi Kehadiran</h2>
+
+      <div class="rsvp-success" *ngIf="rsvpSuccess">
+        <div class="rsvp-success__icon">🎉</div>
+        <h3>Terima Kasih, {{ rsvpGuestName }}!</h3>
+        <p>Konfirmasi kehadiran Anda telah kami terima.</p>
+        <p *ngIf="rsvpGuestQrToken" class="rsvp-success__qr-hint">
+          Simpan QR code di bawah untuk check-in.
+        </p>
+      </div>
+
+      <form class="form" [formGroup]="rsvpForm" (ngSubmit)="submitRsvp()" *ngIf="!rsvpSuccess">
+        <div class="form__group" [class.form__group--error]="fieldInvalid(rsvpForm, 'name')">
+          <label class="form__label">Nama Lengkap</label>
+          <input class="form__input" type="text" formControlName="name" placeholder="Nama sesuai undangan" />
+          <span class="form__error" *ngIf="fieldInvalid(rsvpForm, 'name')">Nama tidak valid</span>
+        </div>
+
+        <div class="form__group" [class.form__group--error]="fieldInvalid(rsvpForm, 'phone')">
+          <label class="form__label">Nomor WhatsApp</label>
+          <input class="form__input" type="tel" formControlName="phone" placeholder="08xxxxxxxxxx" />
+          <span class="form__error" *ngIf="fieldInvalid(rsvpForm, 'phone')">Nomor tidak valid</span>
+        </div>
+
+        <div class="form__group">
+          <label class="form__label">Kehadiran</label>
+          <div class="attendance-toggle">
+            <button type="button" class="attendance-btn"
+              [class.attendance-btn--active]="rsvpAttendance === 'YES'"
+              (click)="setAttendance('YES')">
+              ✓ Hadir
+            </button>
+            <button type="button" class="attendance-btn attendance-btn--no"
+              [class.attendance-btn--active]="rsvpAttendance === 'NO'"
+              (click)="setAttendance('NO')">
+              ✗ Tidak Hadir
+            </button>
+          </div>
+        </div>
+
+        <div class="form__group" *ngIf="rsvpAttendance === 'YES'">
+          <label class="form__label">Jumlah Tamu (maks. 1)</label>
+          <select class="form__input" formControlName="guest_count">
+            <option [value]="1">1 orang</option>
+          </select>
+        </div>
+
+        <div class="form__error-global" *ngIf="rsvpError">{{ rsvpError }}</div>
+
+        <button type="submit" class="btn btn--primary btn--full" [disabled]="rsvpLoading">
+          <span *ngIf="!rsvpLoading">Kirim Konfirmasi</span>
+          <span *ngIf="rsvpLoading" class="spinner"></span>
+        </button>
+      </form>
+    </div>
+  </section>
+
+  <!-- WEDDING GIFT -->
+  <section class="section anim-section" #animSection id="section-gift">
+    <div class="section__inner">
+      <h2 class="section__title">Wedding Gift</h2>
+      <p class="section__text">Tanpa mengurangi rasa hormat, bagi Anda yang ingin memberikan hadiah:</p>
+
+      <div class="gift-card">
+        <div class="gift-card__label">Transfer Bank</div>
+        <div class="gift-card__bank">BCA</div>
+        <div class="gift-card__account">1234567890</div>
+        <div class="gift-card__name">a.n. Anisa Rahayu</div>
+      </div>
+
+      <div class="gift-card">
+        <div class="gift-card__label">Kirim ke Alamat</div>
+        <div class="gift-card__address">
+          Jl. Kebahagiaan No. 8, RT 03/RW 05<br>
+          Kebayoran Baru, Jakarta Selatan 12110
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMMENTS / WISHES -->
+  <section class="section section--warm anim-section" #animSection id="section-wishes">
+    <div class="section__inner">
+      <h2 class="section__title">Ucapan & Doa</h2>
+
+      <form class="form" [formGroup]="commentForm" (ngSubmit)="submitComment()">
+        <div class="form__group" [class.form__group--error]="fieldInvalid(commentForm, 'name')">
+          <input class="form__input" type="text" formControlName="name" placeholder="Nama Anda" />
+        </div>
+        <div class="form__group" [class.form__group--error]="fieldInvalid(commentForm, 'message')">
+          <textarea class="form__input form__textarea" formControlName="message"
+            placeholder="Tuliskan doa dan ucapan terbaik Anda..." rows="3"></textarea>
+        </div>
+        <div class="form__error-global" *ngIf="commentError">{{ commentError }}</div>
+        <div class="form__success" *ngIf="commentSuccess">Ucapan terkirim! 💌</div>
+        <button type="submit" class="btn btn--outline btn--full" [disabled]="commentLoading">
+          <span *ngIf="!commentLoading">Kirim Ucapan</span>
+          <span *ngIf="commentLoading" class="spinner"></span>
+        </button>
+      </form>
+
+      <div class="comments-list" *ngIf="comments.length > 0">
+        <div class="comment-item" *ngFor="let c of comments">
+          <div class="comment-item__avatar">{{ c.name.charAt(0).toUpperCase() }}</div>
+          <div class="comment-item__body">
+            <div class="comment-item__name">{{ c.name }}</div>
+            <div class="comment-item__message">{{ c.message }}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="empty-state" *ngIf="comments.length === 0">
+        <p>Jadilah yang pertama mengucapkan selamat 💐</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- QR CODE (only shown after RSVP success) -->
+  <section class="section anim-section" #animSection id="section-qr" *ngIf="rsvpSuccess && rsvpGuestQrToken">
+    <div class="section__inner">
+      <h2 class="section__title">QR Check-In</h2>
+      <p class="section__text">Screenshot QR code ini untuk digunakan saat check-in di lokasi.</p>
+
+      <div class="qr-wrapper">
+        <qrcode
+          [qrdata]="rsvpGuestQrToken"
+          [width]="240"
+          [errorCorrectionLevel]="'M'"
+          cssClass="qr-image">
+        </qrcode>
+      </div>
+
+      <p class="qr-note">📸 Silakan screenshot QR code ini sebagai tanda masuk acara.</p>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <p>Dengan cinta,</p>
+    <p class="footer__names">Anisa &amp; Budi</p>
+    <p class="footer__heart">❤️</p>
+  </footer>
+
+</div>

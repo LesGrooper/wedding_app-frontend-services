@@ -1,0 +1,136 @@
+@import 'src/app/styles/wo-shared';
+
+.stats-row {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.stat-card {
+  flex: 1;
+  background: $color-white;
+  border-radius: $radius-md;
+  padding: 1.25rem;
+  text-align: center;
+  box-shadow: 0 2px 12px rgba(92,58,30,0.08);
+
+  &__value {
+    font-family: $font-serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: $color-brown-dk;
+  }
+
+  &__label {
+    font-size: 0.78rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: $color-muted;
+    margin-top: 0.25rem;
+  }
+
+  &--total .stat-card__value { color: $color-brown; }
+}
+
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 3rem 1rem;
+  color: $color-muted;
+  font-size: 0.9rem;
+}
+
+.spinner--dark {
+  width: 24px;
+  height: 24px;
+  border: 2px solid rgba($color-brown, 0.2);
+  border-top-color: $color-brown;
+  border-radius: 50%;
+  display: inline-block;
+  animation: spin 0.6s linear infinite;
+}
+
+.guest-table-wrap {
+  background: $color-white;
+  border-radius: $radius-md;
+  overflow: hidden;
+  box-shadow: 0 2px 16px rgba(92,58,30,0.08);
+}
+
+.guest-table-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid rgba($color-brown, 0.1);
+
+  &__title {
+    font-family: $font-serif;
+    font-size: 1.1rem;
+    color: $color-brown-dk;
+  }
+}
+
+.guest-empty {
+  padding: 2rem;
+  text-align: center;
+  color: $color-muted;
+  font-size: 0.9rem;
+}
+
+.guest-table {
+  overflow-x: auto;
+}
+
+.guest-row {
+  display: grid;
+  grid-template-columns: 1fr 90px 90px;
+  align-items: center;
+  padding: 0.75rem 1.25rem;
+  border-bottom: 1px solid rgba($color-brown, 0.06);
+  font-size: 0.875rem;
+  color: $color-text;
+
+  &--head {
+    background: rgba($color-brown, 0.05);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: $color-muted;
+  }
+
+  &--checked {
+    background: rgba(39, 174, 96, 0.04);
+  }
+
+  &__name { font-weight: 500; }
+
+  &__cat {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: $color-muted;
+
+    &.cat--vip { color: $color-gold; }
+  }
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+
+  &--ok {
+    background: rgba($color-success, 0.12);
+    color: $color-success;
+  }
+
+  &--pending {
+    background: rgba($color-muted, 0.12);
+    color: $color-muted;
+  }
+}

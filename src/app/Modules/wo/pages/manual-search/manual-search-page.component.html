@@ -1,0 +1,63 @@
+<div class="wo-layout">
+  <header class="wo-header">
+    <span class="wo-header__title">💍 Cari Tamu</span>
+    <nav class="wo-header__nav">
+      <a routerLink="/wo/dashboard" class="wo-header__btn">Tamu</a>
+      <a routerLink="/wo/search" class="wo-header__btn wo-header__btn--active">Cari</a>
+      <a routerLink="/wo/scanner" class="wo-header__btn">Scan</a>
+    </nav>
+  </header>
+
+  <div class="wo-content">
+
+    <!-- Check-in result toast -->
+    <div class="result-toast" [ngClass]="resultClass" *ngIf="checkinResult" (click)="dismissResult()">
+      <span class="result-toast__msg">{{ checkinResult.message }}</span>
+      <span class="result-toast__dismiss">✕</span>
+    </div>
+
+    <!-- Search -->
+    <div class="search-box">
+      <input class="search-box__input form__input" type="text"
+        [(ngModel)]="searchQuery"
+        (ngModelChange)="onSearchChange()"
+        placeholder="🔍 Cari nama tamu (min 2 karakter)..."
+        autocomplete="off" />
+    </div>
+
+    <div class="searching-hint" *ngIf="searching">
+      <span class="spinner spinner--dark"></span> Mencari...
+    </div>
+
+    <div class="form__error-global" *ngIf="searchError">{{ searchError }}</div>
+
+    <!-- Results -->
+    <div class="guest-results" *ngIf="guests.length > 0">
+      <div class="guest-card" *ngFor="let g of guests">
+        <div class="guest-card__info">
+          <div class="guest-card__name">{{ g.name }}</div>
+          <div class="guest-card__meta">
+            <span class="cat-badge" [class.cat-badge--vip]="g.category === 'VIP'">{{ g.category }}</span>
+            <span class="status-dot" [class.status-dot--checked]="g.is_checked_in">
+              {{ g.is_checked_in ? '✓ Sudah Check-In' : '○ Belum Check-In' }}
+            </span>
+          </div>
+        </div>
+        <button class="btn btn--sm btn--primary"
+          [disabled]="g.is_checked_in || checkinLoading === g.id"
+          (click)="checkIn(g)">
+          <span *ngIf="checkinLoading !== g.id">Check-In</span>
+          <span *ngIf="checkinLoading === g.id" class="spinner"></span>
+        </button>
+      </div>
+    </div>
+
+    <div class="empty-hint" *ngIf="!searching && guests.length === 0 && searchQuery.length >= 2 && !searchError">
+      Tamu tidak ditemukan.
+    </div>
+
+    <div class="empty-hint" *ngIf="searchQuery.length < 2 && guests.length === 0">
+      Ketik minimal 2 karakter untuk mencari.
+    </div>
+  </div>
+</div>

@@ -1,0 +1,37 @@
+<div class="wo-login">
+  <div class="wo-login__card">
+    <div class="wo-login__header">
+      <div class="wo-login__logo">💍</div>
+      <h1 class="wo-login__title">Wedding Organizer</h1>
+      <p class="wo-login__subtitle">Login untuk akses panel WO</p>
+    </div>
+
+    <form class="form" [formGroup]="loginForm" (ngSubmit)="submit()">
+      <div class="form__group" [class.form__group--error]="fieldInvalid('username')">
+        <label class="form__label">Username</label>
+        <input class="form__input" type="text" formControlName="username"
+          placeholder="Username" autocomplete="username" />
+        <span class="form__error" *ngIf="fieldInvalid('username')">Username diperlukan</span>
+      </div>
+
+      <div class="form__group" [class.form__group--error]="fieldInvalid('password')">
+        <label class="form__label">Password</label>
+        <div class="form__input-wrap">
+          <input class="form__input" [type]="showPassword ? 'text' : 'password'"
+            formControlName="password" placeholder="Password" autocomplete="current-password" />
+          <button type="button" class="form__eye" (click)="showPassword = !showPassword">
+            {{ showPassword ? '🙈' : '👁️' }}
+          </button>
+        </div>
+        <span class="form__error" *ngIf="fieldInvalid('password')">Password min. 6 karakter</span>
+      </div>
+
+      <div class="form__error-global" *ngIf="errorMsg">{{ errorMsg }}</div>
+
+      <button type="submit" class="btn btn--primary btn--full" [disabled]="loading">
+        <span *ngIf="!loading">Masuk</span>
+        <span *ngIf="loading" class="spinner"></span>
+      </button>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,130 @@
+@import 'src/app/styles/wo-shared';
+
+.scanner-card {
+  background: $color-white;
+  border-radius: $radius-md;
+  padding: 1.5rem;
+  box-shadow: 0 2px 16px rgba(92,58,30,0.08);
+  margin-top: 1rem;
+
+  &__title {
+    font-family: $font-serif;
+    font-size: 1.3rem;
+    color: $color-brown-dk;
+    margin-bottom: 0.25rem;
+  }
+
+  &__hint {
+    font-size: 0.85rem;
+    color: $color-muted;
+    margin-bottom: 1.25rem;
+  }
+
+  &__textarea {
+    font-family: $font-sans;
+    font-size: 0.9rem;
+    resize: vertical;
+    min-height: 80px;
+  }
+}
+
+// Result Fullscreen
+.result-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+
+  &--ok      { background: #1a6b35; }
+  &--used    { background: #b8620a; }
+  &--invalid { background: #8b1a1a; }
+
+  &__inner {
+    text-align: center;
+    color: $color-white;
+    max-width: 360px;
+    width: 100%;
+  }
+
+  &__icon { font-size: 5rem; margin-bottom: 1rem; }
+
+  &__label {
+    font-family: $font-serif;
+    font-size: 1.8rem;
+    color: $color-white;
+    margin-bottom: 1rem;
+  }
+
+  &__name {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: rgba(255,255,255,0.95);
+    margin-bottom: 0.75rem;
+  }
+
+  &__badge {
+    display: inline-block;
+    padding: 0.3rem 1rem;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.2);
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+
+    &.badge--vip {
+      background: $color-gold;
+      color: $color-brown-dk;
+    }
+  }
+
+  &__entitlements {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+  }
+
+  &__message {
+    font-size: 0.95rem;
+    color: rgba(255,255,255,0.85);
+    margin-bottom: 1.5rem;
+    line-height: 1.5;
+  }
+}
+
+.entitlement {
+  flex: 1;
+  max-width: 130px;
+  padding: 0.75rem;
+  border-radius: $radius-sm;
+  background: rgba(255,255,255,0.15);
+  font-size: 0.9rem;
+  color: rgba(255,255,255,0.5);
+
+  &--active {
+    background: rgba(255,255,255,0.25);
+    color: $color-white;
+    font-weight: 600;
+  }
+}
+
+.btn--scan-again {
+  background: rgba(255,255,255,0.2);
+  color: $color-white;
+  border: 2px solid rgba(255,255,255,0.4);
+  border-radius: $radius-sm;
+  padding: 0.85rem 2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  min-height: 52px;
+  width: 100%;
+  max-width: 280px;
+  transition: background 0.2s;
+
+  &:hover { background: rgba(255,255,255,0.3); }
+}

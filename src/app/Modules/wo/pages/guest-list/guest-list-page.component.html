@@ -1,0 +1,64 @@
+<div class="wo-layout">
+  <header class="wo-header">
+    <span class="wo-header__title">💍 Dashboard WO</span>
+    <nav class="wo-header__nav">
+      <a routerLink="/wo/dashboard" class="wo-header__btn wo-header__btn--active">Tamu</a>
+      <a routerLink="/wo/search" class="wo-header__btn">Cari</a>
+      <a routerLink="/wo/scanner" class="wo-header__btn">Scan</a>
+      <button class="wo-header__btn" (click)="logout()">Keluar</button>
+    </nav>
+  </header>
+
+  <div class="wo-content">
+    <!-- Stats -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-card__value">{{ checkedInCount }}</div>
+        <div class="stat-card__label">Check-In</div>
+      </div>
+      <div class="stat-card stat-card--total">
+        <div class="stat-card__value">{{ totalCount }}</div>
+        <div class="stat-card__label">Total Tamu</div>
+      </div>
+    </div>
+
+    <!-- Loading -->
+    <div class="loading-state" *ngIf="loading">
+      <span class="spinner spinner--dark"></span>
+      <p>Memuat data tamu...</p>
+    </div>
+
+    <div class="form__error-global" *ngIf="errorMsg">
+      {{ errorMsg }}
+      <button class="btn btn--sm btn--outline" style="margin-left:1rem" (click)="loadGuests()">Coba Lagi</button>
+    </div>
+
+    <!-- Table -->
+    <div class="guest-table-wrap" *ngIf="!loading && !errorMsg">
+      <div class="guest-table-header">
+        <h2 class="guest-table-header__title">Daftar Tamu</h2>
+        <button class="btn btn--sm btn--outline" (click)="loadGuests()">🔄 Refresh</button>
+      </div>
+
+      <div class="guest-empty" *ngIf="guests.length === 0">Belum ada data tamu.</div>
+
+      <div class="guest-table" *ngIf="guests.length > 0">
+        <div class="guest-row guest-row--head">
+          <span>Nama</span>
+          <span>Kategori</span>
+          <span>Status</span>
+        </div>
+        <div class="guest-row" *ngFor="let g of guests"
+          [class.guest-row--checked]="g.is_checked_in">
+          <span class="guest-row__name">{{ g.name }}</span>
+          <span class="guest-row__cat" [class.cat--vip]="g.category === 'VIP'">{{ g.category }}</span>
+          <span class="guest-row__status">
+            <span class="badge" [class.badge--ok]="g.is_checked_in" [class.badge--pending]="!g.is_checked_in">
+              {{ g.is_checked_in ? '✓ Hadir' : '— Belum' }}
+            </span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
