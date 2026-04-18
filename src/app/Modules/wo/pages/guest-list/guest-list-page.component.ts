@@ -10,7 +10,7 @@ import { Guest, GuestListResponse } from 'src/app/Models/api.model';
 })
 export class GuestListPageComponent implements OnInit {
 
-  guests: Guest[] = [];
+  guests: any = [];
   loading = false;
   errorMsg = '';
 
@@ -29,10 +29,10 @@ export class GuestListPageComponent implements OnInit {
 
     this.apiService.getGuests().subscribe({
       next: (res: GuestListResponse) => {
-        this.guests = res.data;
+        this.guests = res;
         this.loading = false;
       },
-      error: () => {
+      error: (err) => {
         this.errorMsg = 'Gagal memuat data tamu.';
         this.loading = false;
       },
@@ -44,7 +44,7 @@ export class GuestListPageComponent implements OnInit {
   }
 
   get checkedInCount(): number {
-    return this.guests.filter((g) => g.is_checked_in).length;
+    return this.guests.filter((g : any) => g.is_checked_in).length;
   }
 
   get totalCount(): number {

@@ -10,6 +10,11 @@ const routes: Routes = [
       import('./Modules/guest/guest.module').then((m) => m.GuestModule),
   },
   {
+    path: 'invitation/:guest_id/:guest_name',
+    loadChildren: () =>
+      import('./Modules/guest/guest.module').then((m) => m.GuestModule),
+  },
+  {
     path: 'wo',
     children: [
       {

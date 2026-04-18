@@ -38,6 +38,7 @@ export interface GuestListResponse {
 export type AttendanceStatus = 'YES' | 'NO';
 
 export interface RsvpRequest {
+  guest_id: number;
   name: string;
   phone: string;
   attendance: AttendanceStatus;
@@ -45,8 +46,17 @@ export interface RsvpRequest {
 }
 
 export interface RsvpResponse {
-  message: string;
-  data: {
+  guest : {
+    id: number,
+    name: string,
+    phone: number,
+    category: string,
+    invitation_type: string,
+    is_checked_in: boolean,
+    created_at: string,
+    qr_code: string,
+  }
+  rsvp: {
     id: number;
     name: string;
     attendance: AttendanceStatus;

@@ -84,15 +84,29 @@
   <!-- RSVP -->
   <section class="section section--warm anim-section" #animSection id="section-rsvp">
     <div class="section__inner">
-      <h2 class="section__title">Konfirmasi Kehadiran</h2>
+      <h2 class="section__title" *ngIf="!rsvpSuccess">Konfirmasi Kehadiran</h2>
 
       <div class="rsvp-success" *ngIf="rsvpSuccess">
-        <div class="rsvp-success__icon">🎉</div>
+        <!-- QR CODE (only shown after RSVP success) -->
+        <section *ngIf="rsvpSuccess && !globalService.isEmpty(rsvpGuestQrToken)">
+          <div class="section__inner">
+            <h2 class="section__title">QR Check-In</h2>
+            <p class="section__text">Screenshot QR code ini untuk digunakan saat check-in di lokasi.</p>
+
+            <div class="qr-wrapper">
+              <qrcode
+                [qrdata]="rsvpGuestQrToken"
+                [width]="240"
+                [errorCorrectionLevel]="'M'"
+                cssClass="qr-image">
+              </qrcode>
+            </div>
+
+            <p class="qr-note">📸 Silakan screenshot QR code ini sebagai tanda masuk acara.</p>
+          </div>
+        </section>
         <h3>Terima Kasih, {{ rsvpGuestName }}!</h3>
         <p>Konfirmasi kehadiran Anda telah kami terima.</p>
-        <p *ngIf="rsvpGuestQrToken" class="rsvp-success__qr-hint">
-          Simpan QR code di bawah untuk check-in.
-        </p>
       </div>
 
       <form class="form" [formGroup]="rsvpForm" (ngSubmit)="submitRsvp()" *ngIf="!rsvpSuccess">
@@ -127,7 +141,7 @@
         <div class="form__group" *ngIf="rsvpAttendance === 'YES'">
           <label class="form__label">Jumlah Tamu (maks. 1)</label>
           <select class="form__input" formControlName="guest_count">
-            <option [value]="1">1 orang</option>
+            <option [value]="1" disabled>1 orang</option>
           </select>
         </div>
 
@@ -198,25 +212,6 @@
       <div class="empty-state" *ngIf="comments.length === 0">
         <p>Jadilah yang pertama mengucapkan selamat 💐</p>
       </div>
-    </div>
-  </section>
-
-  <!-- QR CODE (only shown after RSVP success) -->
-  <section class="section anim-section" #animSection id="section-qr" *ngIf="rsvpSuccess && rsvpGuestQrToken">
-    <div class="section__inner">
-      <h2 class="section__title">QR Check-In</h2>
-      <p class="section__text">Screenshot QR code ini untuk digunakan saat check-in di lokasi.</p>
-
-      <div class="qr-wrapper">
-        <qrcode
-          [qrdata]="rsvpGuestQrToken"
-          [width]="240"
-          [errorCorrectionLevel]="'M'"
-          cssClass="qr-image">
-        </qrcode>
-      </div>
-
-      <p class="qr-note">📸 Silakan screenshot QR code ini sebagai tanda masuk acara.</p>
     </div>
   </section>
 

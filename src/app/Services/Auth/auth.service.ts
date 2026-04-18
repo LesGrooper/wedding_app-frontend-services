@@ -23,16 +23,13 @@ export class AuthService {
   }
 
   login(credentials: LoginRequest): Observable<LoginResponse> {
-    const body = new URLSearchParams();
-    body.set('username', credentials.username);
-    body.set('password', credentials.password);
-
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/x-www-form-urlencoded',
-    });
+    const body = {
+      username: credentials.username,
+      password: credentials.password,
+    };
 
     return this.http
-      .post<LoginResponse>(`${environment.apiUrl}/auth/login`, body.toString(), { headers })
+      .post<LoginResponse>(`${environment.apiUrl}/auth/login`, body)
       .pipe(
         tap((res) => {
           this.storage.setToken(res.access_token);

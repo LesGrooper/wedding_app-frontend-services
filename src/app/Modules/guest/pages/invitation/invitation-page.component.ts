@@ -8,10 +8,12 @@ import {
   ViewChildren,
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { Subscription, interval } from 'rxjs';
 import { switchMap, startWith } from 'rxjs/operators';
 import { ApiService } from 'src/app/Services/api.service';
 import { Comment, AttendanceStatus, RsvpResponse, CommentListResponse } from 'src/app/Models/api.model';
+import { GlobalService } from 'src/app/Services/GlobalServices/global-service';
 
 @Component({
   selector: 'app-invitation-page',
@@ -30,15 +32,17 @@ export class InvitationPageComponent implements OnInit, AfterViewInit, OnDestroy
   rsvpLoading = false;
   rsvpSuccess = false;
   rsvpError = '';
-  rsvpGuestQrToken: string | null = null;
+  rsvpGuestQrToken: string = "";
   rsvpGuestName = '';
+  guestId: number | null = null;
+  guestName: string | null = null;
 
   // Comments
   commentForm!: FormGroup;
   commentLoading = false;
   commentSuccess = false;
   commentError = '';
-  comments: Comment[] = [];
+  comments: any = [];
   commentsLoading = false;
 
   private commentPoll$!: Subscription;
@@ -47,9 +51,20 @@ export class InvitationPageComponent implements OnInit, AfterViewInit, OnDestroy
   constructor(
     private fb: FormBuilder,
     private apiService: ApiService,
+    public globalService : GlobalService,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
+    // Read from route parameters (e.g., /invitation/123/John%20Doe)
+    this.route.params.subscribe((params) => {
+      if (params['guest_id']) {
+        this.guestId = parseInt(params['guest_id'], 10);
+      }
+      if (params['guest_name']) {
+        this.guestName = decodeURIComponent(params['guest_name']);
+      }
+    });
     this.buildForms();
     this.startCommentPolling();
   }
@@ -65,7 +80,8 @@ export class InvitationPageComponent implements OnInit, AfterViewInit, OnDestroy
 
   private buildForms(): void {
     this.rsvpForm = this.fb.group({
-      name: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(100)]],
+      guest_id: [this.guestId, Validators.required],
+      name: [this.guestName || '', [Validators.required, Validators.minLength(2), Validators.maxLength(100)]],
       phone: ['', [Validators.required, Validators.pattern(/^[0-9+\-\s]{8,20}$/)]],
       attendance: ['YES', Validators.required],
       guest_count: [1, [Validators.required, Validators.min(1), Validators.max(1)]],
@@ -78,12 +94,14 @@ export class InvitationPageComponent implements OnInit, AfterViewInit, OnDestroy
   }
 
   private startCommentPolling(): void {
-    this.commentPoll$ = interval(15000).pipe(
+    this.commentPoll$ = interval(99900).pipe(
       startWith(0),
       switchMap(() => this.apiService.getComments()),
     ).subscribe({
       next: (res) => {
-        this.comments = [...res.data].reverse();
+        if(!this.globalService.isEmpty(res)) {
+          this.comments = res;
+        }
       },
     });
   }
@@ -132,8 +150,8 @@ export class InvitationPageComponent implements OnInit, AfterViewInit, OnDestroy
       next: (res: RsvpResponse) => {
         this.rsvpLoading = false;
         this.rsvpSuccess = true;
-        this.rsvpGuestName = res.data.name;
-        this.rsvpGuestQrToken = res.data.id ? `${res.data.id}:rsvp` : null;
+        this.rsvpGuestName = res.guest.name;
+        this.rsvpGuestQrToken = res.guest.qr_code ? `${res.guest.qr_code}:rsvp` : "";
         this.rsvpForm.reset();
       },
       error: (err: any) => {
@@ -159,7 +177,7 @@ export class InvitationPageComponent implements OnInit, AfterViewInit, OnDestroy
         this.commentForm.reset();
         setTimeout(() => (this.commentSuccess = false), 3000);
         this.apiService.getComments().subscribe((res: CommentListResponse) => {
-          this.comments = [...res.data].reverse();
+          this.comments = res;
         });
       },
       error: (err: any) => {

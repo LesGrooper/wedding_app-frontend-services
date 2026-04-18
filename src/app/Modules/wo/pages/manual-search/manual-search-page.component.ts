@@ -11,7 +11,7 @@ import { Guest, CheckInResponse, GuestListResponse } from 'src/app/Models/api.mo
 export class ManualSearchPageComponent {
 
   searchQuery = '';
-  guests: Guest[] = [];
+  guests: any = [];
   searching = false;
   searchError = '';
 
@@ -33,7 +33,7 @@ export class ManualSearchPageComponent {
       )
       .subscribe({
         next: (res: GuestListResponse) => {
-          this.guests = res.data;
+          this.guests = res;
           this.searching = false;
         },
         error: () => {
@@ -69,7 +69,7 @@ export class ManualSearchPageComponent {
         this.checkinResult = res;
         this.checkinLoading = null;
         // Mark guest as checked-in locally
-        const found = this.guests.find((g) => g.id === guest.id);
+        const found = this.guests.find((g : any) => g.id === guest.id);
         if (found && res.status === 'OK') {
           found.is_checked_in = true;
         }
